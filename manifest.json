@@ -1,0 +1,229 @@
+{
+    "id": "ecommerce",
+    "name": "E-Commerce Plugin",
+    "version": "3.0.0",
+    "description": "Professional e-commerce solution for cf-cms.js with multi-store support, products, orders, and payments",
+    "author": {
+        "name": "YLStack Dev",
+        "email": "dev@ylstack.com",
+        "url": "https://ylstack.com"
+    },
+    "license": "MIT",
+    "homepage": "https://github.com/ylstack-dev/cf-cms/tree/main/packages/ecommerce-plugin",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ylstack-dev/cf-cms.git"
+    },
+    "cfCmsVersion": "^3.0.0",
+    "capabilities": {
+        "routes": true,
+        "hooks": true,
+        "adminPages": true,
+        "middleware": true,
+        "models": true,
+        "services": true
+    },
+    "config": {
+        "schema": {
+            "stripeKey": {
+                "type": "string",
+                "required": false,
+                "description": "Stripe API secret key for payment processing"
+            },
+            "stripePublicKey": {
+                "type": "string",
+                "required": false,
+                "description": "Stripe publishable key for frontend"
+            },
+            "paypalClientId": {
+                "type": "string",
+                "required": false,
+                "description": "PayPal client ID for payment processing"
+            },
+            "paypalClientSecret": {
+                "type": "string",
+                "required": false,
+                "description": "PayPal client secret for payment processing"
+            },
+            "enableDigitalDownloads": {
+                "type": "boolean",
+                "required": false,
+                "description": "Enable digital product downloads"
+            },
+            "downloadExpirationDays": {
+                "type": "number",
+                "required": false,
+                "description": "Days until download links expire (default: 30)"
+            },
+            "maxDownloads": {
+                "type": "number",
+                "required": false,
+                "description": "Maximum downloads per link (default: 5)"
+            },
+            "enableInventoryTracking": {
+                "type": "boolean",
+                "required": false,
+                "description": "Enable inventory tracking for products"
+            },
+            "lowStockThreshold": {
+                "type": "number",
+                "required": false,
+                "description": "Threshold for low stock alerts (default: 10)"
+            }
+        },
+        "defaults": {
+            "stripeKey": "",
+            "stripePublicKey": "",
+            "paypalClientId": "",
+            "paypalClientSecret": "",
+            "enableDigitalDownloads": true,
+            "downloadExpirationDays": 30,
+            "maxDownloads": 5,
+            "enableInventoryTracking": true,
+            "lowStockThreshold": 10
+        }
+    },
+    "database": {
+        "tables": [
+            "stores",
+            "products",
+            "product_variants",
+            "product_categories",
+            "product_category_mappings",
+            "carts",
+            "cart_items",
+            "orders",
+            "order_items",
+            "digital_downloads",
+            "download_links",
+            "payment_methods",
+            "payments",
+            "refunds",
+            "coupons",
+            "shipping_methods"
+        ],
+        "migrations": [
+            "026_ecommerce_schema.sql"
+        ]
+    },
+    "permissions": [
+        "ecommerce:admin",
+        "ecommerce:stores:view",
+        "ecommerce:stores:create",
+        "ecommerce:stores:edit",
+        "ecommerce:stores:delete",
+        "ecommerce:products:view",
+        "ecommerce:products:create",
+        "ecommerce:products:edit",
+        "ecommerce:products:delete",
+        "ecommerce:orders:view",
+        "ecommerce:orders:edit",
+        "ecommerce:orders:refund",
+        "ecommerce:payments:view",
+        "ecommerce:payments:process",
+        "ecommerce:analytics:view"
+    ],
+    "hooks": [
+        "app:ready",
+        "app:shutdown",
+        "order:before:create",
+        "order:after:create",
+        "order:before:update",
+        "order:after:update",
+        "payment:before:process",
+        "payment:after:process",
+        "product:before:create",
+        "product:after:create",
+        "product:before:update",
+        "product:after:update",
+        "cart:before:checkout",
+        "cart:after:checkout"
+    ],
+    "adminPages": [
+        {
+            "path": "/ecommerce/stores",
+            "title": "Store Management",
+            "icon": "🏪",
+            "description": "Manage multiple stores",
+            "permissions": [
+                "ecommerce:stores:view"
+            ]
+        },
+        {
+            "path": "/ecommerce/products",
+            "title": "Product Catalog",
+            "icon": "📦",
+            "description": "Manage products and inventory",
+            "permissions": [
+                "ecommerce:products:view"
+            ]
+        },
+        {
+            "path": "/ecommerce/orders",
+            "title": "Order Management",
+            "icon": "📋",
+            "description": "View and manage orders",
+            "permissions": [
+                "ecommerce:orders:view"
+            ]
+        },
+        {
+            "path": "/ecommerce/payments",
+            "title": "Payment Configuration",
+            "icon": "💳",
+            "description": "Configure payment methods",
+            "permissions": [
+                "ecommerce:admin"
+            ]
+        },
+        {
+            "path": "/ecommerce/analytics",
+            "title": "E-Commerce Analytics",
+            "icon": "📊",
+            "description": "Sales analytics and reports",
+            "permissions": [
+                "ecommerce:analytics:view"
+            ]
+        }
+    ],
+    "apiEndpoints": [
+        {
+            "path": "/api/stores",
+            "methods": [
+                "GET",
+                "POST"
+            ],
+            "description": "Store management"
+        },
+        {
+            "path": "/api/products",
+            "methods": [
+                "GET",
+                "POST"
+            ],
+            "description": "Product management"
+        },
+        {
+            "path": "/api/orders",
+            "methods": [
+                "GET",
+                "POST"
+            ],
+            "description": "Order management"
+        },
+        {
+            "path": "/api/payments",
+            "methods": [
+                "POST"
+            ],
+            "description": "Payment processing"
+        },
+        {
+            "path": "/api/downloads",
+            "methods": [
+                "GET"
+            ],
+            "description": "Digital downloads"
+        }
+    ]
+}
